@@ -124,7 +124,8 @@ module Smstraffic
         response = http.request(request)
         body = response.body
         hash = Hash.from_xml(Nokogiri::XML(body).to_s)['reply']
-        hash['sms']['status'] #status
+        error = hash['sms']['error']
+        error ? error : hash['sms']['status'] #status or error
       end
     end
 

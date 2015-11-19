@@ -22,7 +22,40 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+
+Define settings:
+
+    Smstraffic::SMS.settings = {
+      login: login,
+      password: password,
+      server: server,
+      translit: true # default is false
+    }
+
+Initialize sms:
+
+    sms = Smstraffic::SMS.new('phone','title','text') # initialize sms
+    sms = Smstraffic::SMS.new('phone','title','text',false) # last parameter overrides 'translit' option
+
+Send it and get sent sms id and dispatch code:
+
+    sms.send # send sms. returns sms id or dispatch code if something went wrong
+    sms.id # get sms id
+
+Get current sms status and update it:
+
+    sms.status # get sms delivery status
+    sms.update_status # updates sms delivery status. returns status or status check response code on error
+
+Get any sms status:
+
+    code, status = Smstraffic::SMS.status(sms_id) # status - sms delivery status unless error or return error
+
+Ex.:
+
+    sms = Smstraffic::SMS.new('79031111111','MyFavouriteCompany','Testing mfms gem')
+    sms.send # => 1032
+    sms.id # => 1032
 
 ## Development
 
