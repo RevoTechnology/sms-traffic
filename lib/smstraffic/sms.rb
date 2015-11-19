@@ -131,7 +131,7 @@ module Smstraffic
 
     def validate!
       raise ArgumentError, "Phone should be assigned to #{self.class}." if @phone.nil?
-      raise ArgumentError, "Phone number should contain only numbers. Minimum length is 10. #{@phone.inspect} is given." unless @phone =~ /^[0-9]{10,}$/
+      raise ArgumentError, "Phone number should contain only numbers. Minimum length is 10. #{@phone.inspect} is given." unless /^[0-9]{10,}$/ =~ @phone
       raise ArgumentError, "Subject should be assigned to #{self.class}." if @subject.nil?
       raise ArgumentError, "Message should be assigned to #{self.class}." if @message.nil?
     end
