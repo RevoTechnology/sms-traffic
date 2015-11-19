@@ -3,13 +3,6 @@ require 'openssl'
 require 'uri'
 require 'russian'
 
-Smstraffic::SMS.settings = {
-    login: 'revoup0',
-    password: 'er5H2iKl',
-    server: 'smstraffic.ru',
-    translit: true
-}
-
 module Smstraffic
   class SMS
 
