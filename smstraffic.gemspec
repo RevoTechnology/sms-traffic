@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'smstraffic/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "sms-traffic"
+  spec.name          = "smstraffic"
   spec.version       = Smstraffic::VERSION
   spec.authors       = ["Neodelf"]
   spec.email         = ["neodelf@gmail.com"]
