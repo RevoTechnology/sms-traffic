@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'smstraffic/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "smstraffic"
+  spec.name          = "sms-traffic"
   spec.version       = Smstraffic::VERSION
   spec.authors       = ["Neodelf"]
   spec.email         = ["neodelf@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Send sms via SMSTraffic service.}
+  spec.description   = %q{Send sms via SMSTraffic service.}
+  spec.homepage      = "https://github.com/RevoTechnology/sms-traffic"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
