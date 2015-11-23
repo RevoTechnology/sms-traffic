@@ -93,9 +93,9 @@ module Smstraffic
         body = response.body
         hash = Hash.from_xml(Nokogiri::XML(body).to_s)['reply']
         result = hash['result']
-        return "#{hash['result']}: #{hash['code']} #{hash['description']}" unless result == 'OK'
+        return "#{result}: code: #{hash['code']}, description: #{hash['description']}" unless result == 'OK'
         @status = 'sent'
-        @id = hash['message_infos']['message_info'][0]['sms_id']
+        @id = hash['message_infos']['message_info']['sms_id']
       end
     end
 
