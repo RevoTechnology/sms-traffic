@@ -23,6 +23,7 @@ module Smstraffic
       @@login = settings[:login]
       @@password = settings[:password]
       @@server = settings[:server]
+      @@routeGroupID = settings[:routeGroupID]
       @@port = 80
       @@ssl_port = 443
       @@ssl = !settings[:ssl].nil? ? settings[:ssl] : true # connect using ssl by default
@@ -117,8 +118,7 @@ module Smstraffic
         response = http.request(request)
         body = response.body
         hash = Hash.from_xml(Nokogiri::XML(body).to_s)['reply']
-        error = hash['sms']['error']
-        error ? error : hash['sms']['status'] #status or error
+        hash['status'] || hash['error'] #status or error
       end
     end
 
@@ -153,11 +153,11 @@ module Smstraffic
 
     def send_url
       message = @translit ? Russian.translit(@message) : @message
-      "/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1"
+      "/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupID=#{@@routeGroupID}"
     end
 
-    def self.status_url msg_id
-      "login=#{@@login}&password=#{@@password}&operation=status&sms_id=#{msg_id}"
+    def self.status_url(msg_id)
+      "/multi.php?login=#{@@login}&password=#{@@password}&operation=status&sms_id=#{msg_id}"
     end
 
   end
