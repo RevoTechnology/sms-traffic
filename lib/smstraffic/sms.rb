@@ -131,7 +131,7 @@ module Smstraffic
 
     def validate!
       raise ArgumentError, "Phone should be assigned to #{self.class}." if @phone.nil?
-      raise ArgumentError, "Phone number should contain only numbers. Minimum length is 10. #{@phone.inspect} is given." unless "#{@phone}" =~ /^[0-9]{10,}$/
+      raise ArgumentError, "Phone number should contain only numbers. Minimum length is 11. #{@phone.inspect} is given." unless "#{@phone}" =~ /^[0-9]{11}$/
       raise ArgumentError, "Subject should be assigned to #{self.class}." if @subject.nil?
       raise ArgumentError, "Message should be assigned to #{self.class}." if @message.nil?
     end
@@ -153,11 +153,11 @@ module Smstraffic
 
     def send_url
       message = @translit ? Russian.translit(@message) : @message
-      "/smartdelivery­in/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupID=#{@@routeGroupID}"
+      "/smartdelivery"+"-in/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupID=#{@@routeGroupID}"
     end
 
     def self.status_url(msg_id)
-      "/smartdelivery­in/multi.php?login=#{@@login}&password=#{@@password}&operation=status&sms_id=#{msg_id}"
+      "/smartdelivery"+"-in/multi.php?login=#{@@login}&password=#{@@password}&operation=status&sms_id=#{msg_id}"
     end
 
   end
