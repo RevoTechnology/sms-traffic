@@ -10,7 +10,7 @@ module Smstraffic
     attr_reader :id, :status
 
     def initialize(phone, subject, message, translit = @@translit)
-      @phone = phone
+      @phone = phone.to_s.length == 10 ? "7#{phone}".to_i : phone
       @subject = subject
       @message = message
       @status = 'not-sent'
@@ -152,8 +152,8 @@ module Smstraffic
     end
 
     def send_url
-      message = @translit ? Russian.translit(@message) : @message
-      "/smartdelivery"+"-in/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupID=#{@@routeGroupID}"
+      message, rus = @translit ? [Russian.translit(@message), 0] : [@message, 1]
+      "/smartdelivery"+"-in/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupID=#{@@routeGroupID}&rus=#{rus}"
     end
 
     def self.status_url(msg_id)
