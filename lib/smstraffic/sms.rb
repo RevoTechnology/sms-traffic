@@ -9,12 +9,12 @@ module Smstraffic
     attr_accessor :phone, :subject, :message
     attr_reader :id, :status
 
-    def initialize(phone, subject, message, translit = @@translit)
+    def initialize(phone, subject, message, translit=nil)
       @phone = phone.to_s.length == 10 ? "7#{phone}".to_i : phone
       @subject = subject
       @message = message
       @status = 'not-sent'
-      @translit = translit
+      @translit = translit.nil? ? @@translit: translit
 
       validate!
     end
