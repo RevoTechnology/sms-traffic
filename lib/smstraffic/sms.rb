@@ -14,7 +14,7 @@ module Smstraffic
       @subject = subject
       @message = message
       @status = 'not-sent'
-      @translit = translit.nil? ? @@translit: translit
+      @translit = translit.nil? ? @@translit : translit
 
       validate!
     end
