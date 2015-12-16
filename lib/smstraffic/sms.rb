@@ -153,7 +153,7 @@ module Smstraffic
 
     def send_url
       message, rus = @translit ? [Russian.translit(@message), 0] : [@message, 1]
-      "/smartdelivery"+"-in/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupId=#{@@routeGroupID}&rus=#{rus}"
+      "/smartdelivery"+"-in/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupId=#{@@routeGroupId}&rus=#{rus}"
     end
 
     def self.status_url(msg_id)
