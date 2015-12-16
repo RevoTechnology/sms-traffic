@@ -23,7 +23,7 @@ module Smstraffic
       @@login = settings[:login]
       @@password = settings[:password]
       @@server = settings[:server]
-      @@routeGroupID = settings[:routeGroupID]
+      @@routeGroupId = settings[:routeGroupId]
       @@port = 80
       @@ssl_port = 443
       @@ssl = !settings[:ssl].nil? ? settings[:ssl] : true # connect using ssl by default
@@ -153,7 +153,7 @@ module Smstraffic
 
     def send_url
       message, rus = @translit ? [Russian.translit(@message), 0] : [@message, 1]
-      "/smartdelivery"+"-in/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupID=#{@@routeGroupID}&rus=#{rus}"
+      "/smartdelivery"+"-in/multi.php?login=#{@@login}&password=#{@@password}&phones=#{@phone}&message=#{URI.encode(message)}&want_sms_ids=1&routeGroupId=#{@@routeGroupID}&rus=#{rus}"
     end
 
     def self.status_url(msg_id)
