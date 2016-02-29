@@ -7,7 +7,7 @@ module Smstraffic
   class SMS
 
     attr_accessor :phone, :subject, :message
-    attr_reader :id, :status
+    attr_reader :id, :status, :errors
 
     def initialize(phone, subject, message, translit=nil)
       @phone = phone.to_s.length == 10 ? "7#{phone}".to_i : phone
@@ -15,6 +15,7 @@ module Smstraffic
       @message = message
       @status = 'not-sent'
       @translit = translit.nil? ? @@translit : translit
+      @errors = []
 
       validate!
     end
@@ -94,9 +95,14 @@ module Smstraffic
         body = response.body
         hash = Hash.from_xml(Nokogiri::XML(body).to_s)['reply']
         result = hash['result']
-        return "#{result}: code: #{hash['code']}, description: #{hash['description']}" unless result == 'OK'
-        @status = 'sent'
-        @id = hash['message_infos']['message_info']['sms_id']
+        if result == 'OK'
+          @status = 'sent'
+          @id = hash['message_infos']['message_info']['sms_id']
+          true
+        else
+          @errors << "#{result}: code: #{hash['code']}, description: #{hash['description']}"
+          false
+        end
       end
     end
 
