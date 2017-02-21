@@ -5,6 +5,7 @@ require 'russian'
 
 module Smstraffic
   class SMS
+    ServerRequestError = Class.new(StandardError)
 
     attr_accessor :phone, :subject, :message
     attr_reader :id, :status, :errors
@@ -92,6 +93,9 @@ module Smstraffic
       self.class.establish_connection.start do |http|
         request = Net::HTTP::Get.new(send_url)
         response = http.request(request)
+
+        raise ServerRequestError if response.code.to_i >= 400
+
         body = response.body
         hash = Hash.from_xml(Nokogiri::XML(body).to_s)['reply']
         result = hash['result']
