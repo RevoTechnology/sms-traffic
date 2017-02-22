@@ -123,8 +123,10 @@ module Smstraffic
         request = Net::HTTP::Get.new(status_url id)
         response = http.request(request)
         body = response.body
-        hash = Hash.from_xml(Nokogiri::XML(body).to_s)['reply']
-        hash['status'] || hash['error'] #status or error
+        hash = Hash.from_xml(Nokogiri::XML(body).to_s)
+        hash = hash['sd_reply'] || hash['reply']
+        delivery_status = hash['msg_info'].try!(:[], 'channel_info').try!(:[], 'status')
+        return [hash['result'], hash['code'], delivery_status]
       end
     end
 
