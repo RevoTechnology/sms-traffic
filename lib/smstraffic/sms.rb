@@ -5,6 +5,7 @@ require 'russian'
 
 module Smstraffic
   class SMS
+    RequestFailure = Class.new(StandardError)
 
     attr_accessor :phone, :subject, :message
     attr_reader :id, :status, :errors
@@ -107,25 +108,33 @@ module Smstraffic
     end
 
     # => SMS status codes:
-    #            СТАТУС              ТИП
-    #    'Нет статуса (blank)' - Промежуточный
-    #    'Acceptd'             - Промежуточный
-    #    'Delivered'           - Окончательный
-    #    'Non Delivered' -     - Окончательный
-    #    'Rejected'            - Окончательный
-    #    'Expired'             - Окончательный
-    #    'Deleted'             - Окончательный
-    #    'Unknown status'      - Окончательный
-
+    #
+    # Промежуточные типы:
+    #  * SENT
+    #  * ENQUEUED
+    #
+    # Окончательные типы:
+    #  * FAILED
+    #  * UNDELIVERED
+    #  * EXPIRED
+    #  * DELIVERED
+    #  * READ
 
     def self.status(id)
       establish_connection.start do |http|
         request = Net::HTTP::Get.new(status_url id)
         response = http.request(request)
+
+        raise RequestFailure, response if response.code.to_i >= 400
+
         body = response.body
-        hash = Hash.from_xml(Nokogiri::XML(body).to_s)['reply']
-        hash['status'] || hash['error'] #status or error
+        hash = Hash.from_xml(body)
+        hash = hash['sd_reply'] || hash['reply']
+        delivery_status = hash['msg_info'].try!(:[], 'channel_info').try!(:[], 'status')
+        return [hash['result'], hash['code'], delivery_status]
       end
+    rescue Net::OpenTimeout => e
+      raise RequestFailure, e
     end
 
     def update_status
